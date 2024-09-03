@@ -8,7 +8,13 @@
 
 ### Matchmaking service design
 
+Overall design:
+
 ![Matchmaking service design](Docs/MatchmakingServiceDesign.jpg)
+
+Database schema:
+
+![Database schema](Docs/DatabaseSchema.svg)
 
 ## How to run
 
