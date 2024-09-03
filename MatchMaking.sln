@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaking", "MatchMaking\MatchMaking.csproj", "{B9AA0752-7416-42D5-BFD5-4671936B7F70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA537115-E298-498F-9280-C37FC94376A8}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaking.Tests.Unit", "MatchMaking.Tests.Unit\MatchMaking.Tests.Unit.csproj", "{B16B0A95-0269-4D0A-B481-CF5D59ADDB1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaking.Tests.Integration", "MatchMaking.Tests.Integration\MatchMaking.Tests.Integration.csproj", "{DF654748-8F4D-4DC8-A447-257186BA50D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9AA0752-7416-42D5-BFD5-4671936B7F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9AA0752-7416-42D5-BFD5-4671936B7F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9AA0752-7416-42D5-BFD5-4671936B7F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9AA0752-7416-42D5-BFD5-4671936B7F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16B0A95-0269-4D0A-B481-CF5D59ADDB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16B0A95-0269-4D0A-B481-CF5D59ADDB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16B0A95-0269-4D0A-B481-CF5D59ADDB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16B0A95-0269-4D0A-B481-CF5D59ADDB1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF654748-8F4D-4DC8-A447-257186BA50D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF654748-8F4D-4DC8-A447-257186BA50D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF654748-8F4D-4DC8-A447-257186BA50D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF654748-8F4D-4DC8-A447-257186BA50D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

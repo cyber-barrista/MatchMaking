@@ -1,0 +1,97 @@
+﻿services:
+  write-db-instance-0:
+    image: bitnami/postgresql-repmgr:16.4.0
+    ports:
+      - 5432
+    volumes:
+      - write-db-instance-0:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRES_SUPERUSER_PASS}
+      - POSTGRESQL_DATABASE=${DATABASE_NAME}
+      - POSTGRESQL_USERNAME=${DATABASE_USER}
+      - POSTGRESQL_PASSWORD=${DATABASE_PASS}
+      - REPMGR_USERNAME=${CLUSTER_SYNC_USER}
+      - REPMGR_PASSWORD=${CLUSTER_SYNC_PASS}
+      - REPMGR_PRIMARY_HOST=write-db-instance-0
+      - REPMGR_PARTNER_NODES=write-db-instance-0,read-db-instance-1,read-db-instance-2
+      - REPMGR_NODE_NAME=write-db-instance-0
+      - REPMGR_NODE_NETWORK_NAME=write-db-instance-0
+  
+  read-db-instance-1:
+    image: bitnami/postgresql-repmgr:16.4.0
+    ports:
+      - 5432
+    volumes:
+      - read-db-instance-1:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRES_SUPERUSER_PASS}
+      - POSTGRESQL_DATABASE=${DATABASE_NAME}
+      - POSTGRESQL_USERNAME=${DATABASE_USER}
+      - POSTGRESQL_PASSWORD=${DATABASE_PASS}
+      - REPMGR_USERNAME=${CLUSTER_SYNC_USER}
+      - REPMGR_PASSWORD=${CLUSTER_SYNC_PASS}
+      - REPMGR_PRIMARY_HOST=write-db-instance-0
+      - REPMGR_PARTNER_NODES=write-db-instance-0,read-db-instance-1,read-db-instance-2
+      - REPMGR_NODE_NAME=read-db-instance-1
+      - REPMGR_NODE_NETWORK_NAME=read-db-instance-1
+
+  read-db-instance-2:
+    image: bitnami/postgresql-repmgr:16.4.0
+    ports:
+      - 5432
+    volumes:
+      - read-db-instance-2:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRES_SUPERUSER_PASS}
+      - POSTGRESQL_DATABASE=${DATABASE_NAME}
+      - POSTGRESQL_USERNAME=${DATABASE_USER}
+      - POSTGRESQL_PASSWORD=${DATABASE_PASS}
+      - REPMGR_USERNAME=${CLUSTER_SYNC_USER}
+      - REPMGR_PASSWORD=${CLUSTER_SYNC_PASS}
+      - REPMGR_PRIMARY_HOST=write-db-instance-0
+      - REPMGR_PARTNER_NODES=write-db-instance-0,read-db-instance-1,read-db-instance-2
+      - REPMGR_NODE_NAME=read-db-instance-2
+      - REPMGR_NODE_NETWORK_NAME=read-db-instance-2
+
+  pgpool:
+    image: bitnami/pgpool:4.5.3
+    container_name: pgpool
+    ports:
+      - 5432:5432
+    depends_on:
+      - write-db-instance-0
+      - read-db-instance-1
+      - read-db-instance-2
+    environment:
+      - PGPOOL_BACKEND_NODES=0:write-db-instance-0:5432,1:read-db-instance-1:5432,2:read-db-instance-2:5432
+      - PGPOOL_SR_CHECK_USER=${DATABASE_USER}
+      - PGPOOL_SR_CHECK_PASSWORD=${DATABASE_PASS}
+      - PGPOOL_ENABLE_LDAP=no
+      - PGPOOL_POSTGRES_USERNAME=${DATABASE_USER}
+      - PGPOOL_POSTGRES_PASSWORD=${DATABASE_PASS}
+      - PGPOOL_ADMIN_USERNAME=${PGPOOL_SUPERUSER}
+      - PGPOOL_ADMIN_PASSWORD=${PGPOOL_SUPERUSER_PASS}
+    healthcheck:
+      test: [ "CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  matchmaking:
+    image: matchmaking
+    build:
+      context: .
+      dockerfile: MatchMaking/Dockerfile
+    restart: on-failure
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=pgpool;Port=5432;Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASS}
+    depends_on:
+      - pgpool
+
+volumes:
+  write-db-instance-0:
+    driver: local
+  read-db-instance-1:
+    driver: local
+  read-db-instance-2:
+    driver: local
